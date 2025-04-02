@@ -25,31 +25,22 @@ public class MathOperationTransformer implements Transformer {
     @Override
     public void transform(Report report, List<Map<String, Object>> rows) {
         for (Map<String, Object> row : rows) {
-            double result = 0;
+            System.out.println(inputs.get(0).getName());
+            Object first = row.get(inputs.get(0).getName());
+            double firstDouble = Double.parseDouble(first.toString());
+            Object second = row.get(inputs.get(1).getName());
+            double secondDouble = Double.parseDouble(second.toString());
+
+            System.out.println(firstDouble + " " + secondDouble);
+
 
             if(operation == MathOperation.ADD) {
-                for (Column column : inputs) {
-                    Object value = row.get(column.getName());
-                    if (value instanceof Number) {
-                        result += ((Number) value).doubleValue();
-                    }
-                }
+                row.put(output.getName(), firstDouble + secondDouble);
+            }
+            if(operation == MathOperation.SUBTRACT) {
+                row.put(output.getName(), firstDouble - secondDouble);
             }
 
-            if(operation == MathOperation.SUBTRACT) {
-                ArrayList<Double> subs = new ArrayList<>();
-                for (Column column : inputs) {
-                    Object value = row.get(column.getName());
-                    if (value instanceof Number) {
-                        subs.add(((Number) value).doubleValue());
-                    }
-                }
-                result += subs.getFirst();
-                for (int i = 1; i < subs.size(); i++) {
-                    result -= subs.get(i);
-                }
-            }
-            row.put(output.getName(), result);
         }
     }
 

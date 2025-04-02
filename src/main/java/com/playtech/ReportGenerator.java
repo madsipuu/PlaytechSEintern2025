@@ -33,7 +33,7 @@ public class ReportGenerator {
             System.out.println(csvData.get(16));
             System.out.println(csvData.get(116).keySet());
             System.out.println(csvData.get(1116).get("BetAmount"));
-
+            // "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\casino_gaming_results.csv" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\DailyBetWinLossReport.xml" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\output\DailyBetWinLossReport.jsonl"
             //All outputs
 
             for(Transformer c: report.getTransformers()){

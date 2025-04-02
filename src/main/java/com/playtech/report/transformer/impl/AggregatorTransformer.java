@@ -9,15 +9,42 @@ import jakarta.xml.bind.annotation.XmlIDREF;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AggregatorTransformer implements Transformer {
     public static final String NAME = "Aggregator";
 
+    private final Column groupByColumn;
+    private final List<AggregateBy> aggregateColumns;
+
     // TODO: Implement transformer logic
-    public AggregatorTransformer(Column groupByColumn, List<AggregateBy> aggregateColumns) {}
+    public AggregatorTransformer(Column groupByColumn, List<AggregateBy> aggregateColumns) {
+        this.groupByColumn = groupByColumn;
+        this.aggregateColumns = aggregateColumns;
+    }
 
     @Override
-    public void transform(Report report, List<Map<String, Object>> rows) {}
+    public void transform(Report report, List<Map<String, Object>> rows) {
+
+        Map<Object, List<Map<String, Object>>> groupedData = rows.stream()
+                .collect(Collectors.groupingBy(row -> row.get(groupByColumn))); // Change "date" to your actual key
+        for (Map.Entry<Object, List<Map<String, Object>>> entry : groupedData.entrySet()) {
+            Object key = entry.getKey();
+            List<Map<String, Object>> groupedRows = entry.getValue();
+
+            System.out.println("Group: " + key);
+            groupedRows.forEach(System.out::println);
+        }
+
+            //enne seda  on vaja ära sorteerida kuupäevade järgi
+            for(AggregateBy aggregateColumn : aggregateColumns) {
+                System.out.println(aggregateColumn.getInput().getName());
+                System.out.println(aggregateColumn.getOutput().getName());
+                System.out.println(aggregateColumn.getMethod());
+                System.out.println(" ");
+            }
+        //}
+    }
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class AggregateBy {
