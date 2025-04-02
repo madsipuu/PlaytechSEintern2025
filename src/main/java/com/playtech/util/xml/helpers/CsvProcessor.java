@@ -14,7 +14,7 @@ public class CsvProcessor {
         List<Object[]> lines = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
+            String firstline = br.readLine();
             while ((line = br.readLine()) != null) {
                 Object[] values = line.split(",");
                 lines.add(values);
