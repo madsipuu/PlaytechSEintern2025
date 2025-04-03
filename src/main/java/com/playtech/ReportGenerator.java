@@ -36,7 +36,7 @@ public class ReportGenerator {
 
             //Go through every transformer with data
             for(Transformer c: report.getTransformers()){
-                System.out.println(c);
+                //System.out.println(c);
                 c.transform(report, csvData);
             }
 
@@ -48,6 +48,7 @@ public class ReportGenerator {
                     for (Map<String, Object> row : csvData) {
                         writer.write(convertToJson(row) + "\n"); //Write JSON object in each line
                     }
+                    System.out.println("Report successfully generated");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -66,7 +67,7 @@ public class ReportGenerator {
         // TODO: Implement logic
     }
 
-    //could just add dependencies to maven to do this, but I was not sure if I was allowed
+    //not allowed to add any dependencies
     //this is Chatgpt generated
     private static String convertToJson(Map<String, Object> map) {
         StringBuilder json = new StringBuilder("{");
@@ -81,7 +82,7 @@ public class ReportGenerator {
             }
             json.append(",");
         }
-        if (json.length() > 1) json.deleteCharAt(json.length() - 1); //Removes last comma
+        if (json.length() > 1) json.deleteCharAt(json.length() - 1); // Removes last comma
         json.append("}");
         return json.toString();
     }

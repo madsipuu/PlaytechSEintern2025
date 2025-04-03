@@ -24,9 +24,13 @@ public class CsvProcessor {
                 Object[] row = lines.get(i);
                 if (row.length != inputs.size()) continue; // Skips faulty rows
 
+                //maybe check if lines hava valid data types here?
                 Map<String, Object> rowData = new HashMap<>();
                 for (int j = 0; j < inputs.size(); j++) {
-                    rowData.put(inputs.get(j).getName(), row[j]);
+                    //if data is allowed type
+                    if(inputs.get(j).getType() == Column.DataType.STRING || inputs.get(j).getType() == Column.DataType.INTEGER || inputs.get(j).getType() == Column.DataType.DOUBLE || inputs.get(j).getType() == Column.DataType.DATE || inputs.get(j).getType() == Column.DataType.DATETIME) {
+                        rowData.put(inputs.get(j).getName(), row[j]);
+                    }
                 }
                 data.add(rowData);
             }

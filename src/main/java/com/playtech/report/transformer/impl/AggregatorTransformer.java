@@ -43,7 +43,7 @@ public class AggregatorTransformer implements Transformer {
         for (Map.Entry<String, List<Map<String, Object>>> entry : newmap.entrySet()) {
             //new row for new rows
             Map<String, Object> newrow = new HashMap<>();
-            System.out.println(entry.getKey());
+
             //looking at each aggrebate
             for(AggregateBy aggregateColumn : aggregateColumns) {
                 String AgregateInput = (aggregateColumn.getInput().getName());
