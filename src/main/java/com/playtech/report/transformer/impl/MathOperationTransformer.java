@@ -26,13 +26,16 @@ public class MathOperationTransformer implements Transformer {
     public void transform(Report report, List<Map<String, Object>> rows) {
         for (Map<String, Object> row : rows) {
 
+
             String first = getInputs().get(0).getName();
-            String second = getInputs().get(1).getName();
-
-
-            //not accounted if inputs has more than 2 elements
             double firstnum = (double) row.get(first);
-            double secondnum = (double) row.get(second);
+            double secondnum = 0;
+
+            //if there are more than 2 inputs
+            for (int i = 1; i < getInputs().size(); i++) {
+                String second = getInputs().get(i).getName();
+                secondnum =+ (double) row.get(second);
+            }
             //System.out.println(firstnum + " " + secondnum);
 
 

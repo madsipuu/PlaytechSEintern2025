@@ -40,6 +40,7 @@ public class ReportGenerator {
                 System.out.println(c);
                 c.transform(report, csvData);
             }
+            System.out.println(report);
 
             
             
