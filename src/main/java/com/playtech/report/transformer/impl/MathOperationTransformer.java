@@ -25,23 +25,36 @@ public class MathOperationTransformer implements Transformer {
     @Override
     public void transform(Report report, List<Map<String, Object>> rows) {
         for (Map<String, Object> row : rows) {
-            System.out.println(inputs.get(0).getName());
-            Object first = row.get(inputs.get(0).getName());
-            double firstDouble = Double.parseDouble(first.toString());
-            Object second = row.get(inputs.get(1).getName());
-            double secondDouble = Double.parseDouble(second.toString());
 
-            System.out.println(firstDouble + " " + secondDouble);
+            String first = getInputs().get(0).getName();
+            String second = getInputs().get(1).getName();
 
 
-            if(operation == MathOperation.ADD) {
-                row.put(output.getName(), firstDouble + secondDouble);
+            //not accounted if inputs has more than 2 elements
+            double firstnum = (double) row.get(first);
+            double secondnum = (double) row.get(second);
+            System.out.println(firstnum + " " + secondnum);
+
+
+            if(getOperation() == MathOperation.ADD) {
+                row.put(getOutput().getName(), firstnum + secondnum);
             }
-            if(operation == MathOperation.SUBTRACT) {
-                row.put(output.getName(), firstDouble - secondDouble);
+            if(getOperation() == MathOperation.SUBTRACT) {
+                row.put(getOutput().getName(), firstnum - secondnum);
             }
-
         }
+    }
+
+    public List<Column> getInputs() {
+        return inputs;
+    }
+
+    public MathOperation getOperation() {
+        return operation;
+    }
+
+    public Column getOutput() {
+        return output;
     }
 
     public enum MathOperation {
