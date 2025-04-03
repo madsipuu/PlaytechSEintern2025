@@ -33,7 +33,7 @@ public class MathOperationTransformer implements Transformer {
             //not accounted if inputs has more than 2 elements
             double firstnum = (double) row.get(first);
             double secondnum = (double) row.get(second);
-            System.out.println(firstnum + " " + secondnum);
+            //System.out.println(firstnum + " " + secondnum);
 
 
             if(getOperation() == MathOperation.ADD) {

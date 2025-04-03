@@ -22,7 +22,16 @@ public class StringFormatterTransformer implements Transformer {
 
     @Override
     public void transform(Report report, List<Map<String, Object>> rows) {
-
+        for (Map<String, Object> row : rows) {
+            //for every input
+            for (Column col : getInputs()) {
+                String input = col.getName();
+                //assuming format is in right form
+                String formatted = String.format(getFormat(), row.get(input));
+                //System.out.println(formatted);
+                row.put(getOutput().getName(), formatted);
+            }
+        }
     }
 
     public List<Column> getInputs() {
