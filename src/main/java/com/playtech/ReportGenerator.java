@@ -74,7 +74,7 @@ public class ReportGenerator {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             json.append("\"").append(entry.getKey()).append("\":");
 
-            //Handle different data types
+            // Handle different data types
             if (entry.getValue() instanceof Number || entry.getValue() instanceof Boolean) {
                 json.append(entry.getValue());
             } else {

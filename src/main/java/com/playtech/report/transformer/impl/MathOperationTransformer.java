@@ -36,6 +36,7 @@ public class MathOperationTransformer implements Transformer {
                 String second = getInputs().get(i).getName();
                 secondnum =+ (double) row.get(second);
             }
+
             //System.out.println(firstnum + " " + secondnum);
 
 

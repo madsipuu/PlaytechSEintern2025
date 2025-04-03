@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-
+// TODO: read from cvs file
 public class CsvProcessor {
     public static List<Map<String, Object>> readCsv(String filePath, List<Column> inputs) {
         List<Map<String, Object>> data = new ArrayList<>();
@@ -22,9 +22,9 @@ public class CsvProcessor {
 
             for (int i = 0; i < lines.size(); i++) {
                 Object[] row = lines.get(i);
-                if (row.length != inputs.size()) continue; // Skips faulty rows
+                if (row.length != inputs.size()) continue; //skip faulty rows
 
-                //maybe check if lines hava valid data types here?
+
                 Map<String, Object> rowData = new HashMap<>();
                 for (int j = 0; j < inputs.size(); j++) {
                     //if data is allowed type
@@ -40,4 +40,5 @@ public class CsvProcessor {
 
         return data;
     }
+
 }
