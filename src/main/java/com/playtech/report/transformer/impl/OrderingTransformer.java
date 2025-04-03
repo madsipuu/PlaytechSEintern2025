@@ -22,8 +22,12 @@ public class OrderingTransformer implements Transformer {
     @Override
     public void transform(Report report, List<Map<String, Object>> rows) {
         String sortby = getInput().getName();
-        rows.sort(Comparator.comparing(row -> (String) row.get(sortby)));
-
+        if(getOrder()==Order.ASC) {
+            rows.sort(Comparator.comparing(row -> (String) row.get(sortby)));
+        }
+        if(getOrder()==Order.DESC) {
+            rows.sort(Comparator.comparing(row -> (String) row.get(sortby), Comparator.reverseOrder()));
+        }
     }
 
     public enum Order {

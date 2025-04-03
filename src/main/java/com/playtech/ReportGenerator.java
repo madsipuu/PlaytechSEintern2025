@@ -33,26 +33,27 @@ public class ReportGenerator {
             //Read CSV Data
             List<Map<String, Object>> csvData = CsvProcessor.readCsv(csvDataFilePath, report.getInputs());
 
-            //System.out.println(csvData.get(1116).get("BetAmount"));
-            // "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\casino_gaming_results.csv" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\DailyBetWinLossReport.xml" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\output\DailyBetWinLossReport.jsonl"
 
-            //Go through every transfromer whit data
+            //Go through every transformer with data
             for(Transformer c: report.getTransformers()){
                 System.out.println(c);
                 c.transform(report, csvData);
             }
 
 
+            //format and output(only for JSONL file)
             Report.FileFormat OutputFormat= report.getOutputFormat();
-            System.out.println(OutputFormat);
-            System.out.println(report);
-            //format and output
-            try (FileWriter writer = new FileWriter(outputDirectoryPath)) {
-                for (Map<String, Object> row : csvData) {
-                    writer.write(convertToJson(row) + "\n"); // Write JSON object in each line
+            if(OutputFormat == Report.FileFormat.JSONL) {
+                try (FileWriter writer = new FileWriter(outputDirectoryPath)) {
+                    for (Map<String, Object> row : csvData) {
+                        writer.write(convertToJson(row) + "\n"); //Write JSON object in each line
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            }else{
+                //message if output format is not JSONL
+                System.err.println("WRONG output format, you want: " + OutputFormat + ". But program only works with JSNOL");
             }
 
 
@@ -65,12 +66,14 @@ public class ReportGenerator {
         // TODO: Implement logic
     }
 
+    //could just add dependencies to maven to do this, but I was not sure if I was allowed
+    //this is Chatgpt generated
     private static String convertToJson(Map<String, Object> map) {
         StringBuilder json = new StringBuilder("{");
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             json.append("\"").append(entry.getKey()).append("\":");
 
-            // Handle different data types
+            //Handle different data types
             if (entry.getValue() instanceof Number || entry.getValue() instanceof Boolean) {
                 json.append(entry.getValue());
             } else {
@@ -78,7 +81,7 @@ public class ReportGenerator {
             }
             json.append(",");
         }
-        if (json.length() > 1) json.deleteCharAt(json.length() - 1); // Remove last comma
+        if (json.length() > 1) json.deleteCharAt(json.length() - 1); //Removes last comma
         json.append("}");
         return json.toString();
     }
