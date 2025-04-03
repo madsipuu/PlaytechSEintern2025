@@ -9,6 +9,9 @@ import com.playtech.util.xml.helpers.CsvProcessor;
 import com.playtech.util.xml.helpers.TransformerWrapper;
 import jakarta.xml.bind.JAXBException;
 
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,46 +32,28 @@ public class ReportGenerator {
 
             //Read CSV Data
             List<Map<String, Object>> csvData = CsvProcessor.readCsv(csvDataFilePath, report.getInputs());
-            System.out.println(csvData.size());
-            System.out.println(csvData.get(16));
-            System.out.println(csvData.get(116).keySet());
-            System.out.println(csvData.get(1116).get("BetAmount"));
-            // "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\casino_gaming_results.csv" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\DailyBetWinLossReport.xml" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\output\DailyBetWinLossReport.jsonl"
-            //All outputs
 
+            //System.out.println(csvData.get(1116).get("BetAmount"));
+            // "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\casino_gaming_results.csv" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\input\DailyBetWinLossReport.xml" "C:\Users\madispuu\IdeaProjects\PlaytechSEintern2025\output\DailyBetWinLossReport.jsonl"
+
+            //Go through every transfromer whit data
             for(Transformer c: report.getTransformers()){
                 System.out.println(c);
                 c.transform(report, csvData);
             }
+
+
+            Report.FileFormat OutputFormat= report.getOutputFormat();
+            System.out.println(OutputFormat);
             System.out.println(report);
-
-            
-            
-            
-
-
-
-
-
-
-
-
-/*
-            System.out.println(csvDataFilePath);
-            System.out.println(reportXmlFilePath);
-            System.out.println(outputDirectoryPath);
-
-            System.out.println(report.getReportName());
-            for(Column c: report.getInputs()){
-                System.out.println(c.getName());
+            //format and output
+            try (FileWriter writer = new FileWriter(outputDirectoryPath)) {
+                for (Map<String, Object> row : csvData) {
+                    writer.write(convertToJson(row) + "\n"); // Write JSON object in each line
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            System.out.println();
-            System.out.println(report.getOutputFormat());
-            for(Column c: report.getOutputs()){
-                System.out.println(c.getName());
-
-            }*/
 
 
         } catch (JAXBException e) {
@@ -80,6 +65,23 @@ public class ReportGenerator {
         // TODO: Implement logic
     }
 
+    private static String convertToJson(Map<String, Object> map) {
+        StringBuilder json = new StringBuilder("{");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            json.append("\"").append(entry.getKey()).append("\":");
+
+            // Handle different data types
+            if (entry.getValue() instanceof Number || entry.getValue() instanceof Boolean) {
+                json.append(entry.getValue());
+            } else {
+                json.append("\"").append(entry.getValue()).append("\"");
+            }
+            json.append(",");
+        }
+        if (json.length() > 1) json.deleteCharAt(json.length() - 1); // Remove last comma
+        json.append("}");
+        return json.toString();
+    }
 
 }
 
